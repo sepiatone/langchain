@@ -14,6 +14,7 @@ EXPECTED_ALL = [
     "MlflowCallbackHandler",
     "LLMonitorCallbackHandler",
     "OpenAICallbackHandler",
+    "AnthropicCallbackHandler",
     "LLMThoughtLabeler",
     "StreamlitCallbackHandler",
     "WandbCallbackHandler",

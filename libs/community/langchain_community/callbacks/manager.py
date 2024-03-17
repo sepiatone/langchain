@@ -10,6 +10,7 @@ from typing import (
 
 from langchain_core.tracers.context import register_configure_hook
 
+from langchain_community.callbacks.anthropic_callback import AnthropicCallbackHandler
 from langchain_community.callbacks.openai_info import OpenAICallbackHandler
 from langchain_community.callbacks.tracers.comet import CometTracer
 from langchain_community.callbacks.tracers.wandb import WandbTracer
@@ -19,6 +20,9 @@ logger = logging.getLogger(__name__)
 openai_callback_var: ContextVar[Optional[OpenAICallbackHandler]] = ContextVar(
     "openai_callback", default=None
 )
+anthropic_callback_var: ContextVar[Optional[AnthropicCallbackHandler]] = ContextVar(
+    "anthropic_callback", default=None
+)
 wandb_tracing_callback_var: ContextVar[Optional[WandbTracer]] = ContextVar(  # noqa: E501
     "tracing_wandb_callback", default=None
 )
@@ -27,6 +31,7 @@ comet_tracing_callback_var: ContextVar[Optional[CometTracer]] = ContextVar(  # n
 )
 
 register_configure_hook(openai_callback_var, True)
+register_configure_hook(anthropic_callback_var, True)
 register_configure_hook(
     wandb_tracing_callback_var, True, WandbTracer, "LANGCHAIN_WANDB_TRACING"
 )
@@ -51,6 +56,24 @@ def get_openai_callback() -> Generator[OpenAICallbackHandler, None, None]:
     openai_callback_var.set(cb)
     yield cb
     openai_callback_var.set(None)
+
+
+@contextmanager
+def get_anthropic_callback() -> Generator[AnthropicCallbackHandler, None, None]:
+    """Get the Anthropic callback handler in a context manager.
+    which conveniently exposes token and cost information.
+
+    Returns:
+        AnthropicCallbackHandler: The Anthropic callback handler.
+
+    Example:
+        >>> with get_anthropic_callback() as cb:
+        ...     # Use the Anthropic callback handler
+    """
+    cb = AnthropicCallbackHandler()
+    anthropic_callback_var.set(cb)
+    yield cb
+    anthropic_callback_var.set(None)
 
 
 @contextmanager

@@ -26,6 +26,7 @@ _module_lookup = {
     "LabelStudioCallbackHandler": "langchain_community.callbacks.labelstudio_callback",
     "MlflowCallbackHandler": "langchain_community.callbacks.mlflow_callback",
     "OpenAICallbackHandler": "langchain_community.callbacks.openai_info",
+    "AnthropicCallbackHandler": "langchain_community.callbacks.anthropic_callback",
     "PromptLayerCallbackHandler": "langchain_community.callbacks.promptlayer_callback",
     "SageMakerCallbackHandler": "langchain_community.callbacks.sagemaker_callback",
     "StreamlitCallbackHandler": "langchain_community.callbacks.streamlit",
